@@ -59,7 +59,7 @@ class EsaOAuth2Handler {
     private user: string = null,
     private nextOAuthURL: string = null
   ) {
-    const serviceName = `esa-${this.team}-${this.user}`;
+    const serviceName = `esa#${this.team}#${this.user}`;
 
     this.service = OAuth2.createService(serviceName)
       .setAuthorizationBaseUrl("https://api.esa.io/oauth/authorize")
