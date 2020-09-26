@@ -176,14 +176,14 @@ const executeLinkSharedEvent = (event: LinkSharedEvent): void => {
   if (event.links.length === 1) {
     doUnfurls(event.channel, event.user, event.message_ts, event.links[0].url);
   } else {
-    event.links.forEach(link => {
+    for (const link of event.links) {
       new JobBroker().enqueue(chatUnfurl, {
         channel: event.channel,
         user: event.user,
         message_ts: event.message_ts,
         url: link.url
       });
-    });
+    }
   }
 };
 
