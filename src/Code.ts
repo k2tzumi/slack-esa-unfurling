@@ -32,9 +32,9 @@ const slackHandleCallback = (request): HtmlOutput => {
 
 const esaHandleCallback = (request): HtmlOutput => {
   const { serviceName } = request.parameter;
-  const team = serviceName.split("#")[1];
-  const user = serviceName.split("#")[2];
-  const cacheKey = `${team}#${user}`;
+  const team = serviceName.split("|")[1];
+  const user = serviceName.split("|")[2];
+  const cacheKey = `${team}|${user}`;
 
   const handler = createEsaOAuth2Handler(team, user);
   // Authentication
@@ -288,7 +288,7 @@ const executeButton = (blockActions: BlockActions): {} => {
       const channel = blockActions.channel.id;
       const message_ts = formValue.message_ts;
       const cache = CacheService.getScriptCache();
-      const cacheKey = `${team}#${user}`;
+      const cacheKey = `${team}|${user}`;
       const cacheValue = { ...formValue, channel, message_ts, response_url };
 
       cache.put(cacheKey, JSON.stringify(cacheValue));
