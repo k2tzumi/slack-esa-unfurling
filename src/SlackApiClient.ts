@@ -55,7 +55,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "dialog.open";
     const payload: {} = {
       dialog,
-      trigger_id
+      trigger_id,
     };
 
     const response: Response = this.invokeAPI(endPoint, payload);
@@ -73,7 +73,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "views.open";
     const payload: {} = {
       view: views,
-      trigger_id
+      trigger_id,
     };
 
     const response: Response = this.invokeAPI(endPoint, payload);
@@ -92,7 +92,7 @@ class SlackApiClient {
     const payload: {} = {
       view: views,
       hash,
-      view_id
+      view_id,
     };
 
     const response: Response = this.invokeAPI(endPoint, payload);
@@ -115,7 +115,7 @@ class SlackApiClient {
     const payload: {} = {
       channel,
       name,
-      timestamp
+      timestamp,
     };
 
     const response: Response = this.invokeAPI(endPoint, payload);
@@ -145,7 +145,7 @@ class SlackApiClient {
     let payload: {} = {
       channel,
       text,
-      user
+      user,
     };
 
     if (blocks) {
@@ -178,7 +178,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "chat.postMessage";
     let payload: {} = {
       channel,
-      text
+      text,
     };
     if (thread_ts) {
       payload = { ...payload, thread_ts };
@@ -215,7 +215,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "chat.scheduleMessage";
     let payload: {} = {
       channel,
-      post_at: Math.ceil(post_at.getTime() / 1000)
+      post_at: Math.ceil(post_at.getTime() / 1000),
     };
     if (text) {
       payload = { ...payload, text };
@@ -247,7 +247,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "chat.deleteScheduledMessage";
     const payload: {} = {
       channel,
-      scheduled_message_id
+      scheduled_message_id,
     };
 
     const response = this.invokeAPI(endPoint, payload);
@@ -276,7 +276,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "conversations.history";
     let payload: {} = {
       channel,
-      inclusive: true
+      inclusive: true,
     };
     if (latest) {
       payload = { ...payload, latest };
@@ -313,7 +313,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "chat.update";
     let payload: {} = {
       channel,
-      ts
+      ts,
     };
     if (text) {
       payload = { ...payload, text };
@@ -345,7 +345,7 @@ class SlackApiClient {
     let payload: {} = {
       channel,
       ts,
-      unfurls
+      unfurls,
     };
 
     if (user_auth_message) {
@@ -373,7 +373,7 @@ class SlackApiClient {
     const endPoint = SlackApiClient.BASE_PATH + "chat.delete";
     const payload: {} = {
       channel,
-      ts
+      ts,
     };
 
     const response: Response = this.invokeAPI(endPoint, payload);
@@ -390,14 +390,14 @@ class SlackApiClient {
   private postRequestHeader() {
     return {
       "content-type": "application/json; charset=UTF-8",
-      Authorization: `Bearer ${this.token}`
+      Authorization: `Bearer ${this.token}`,
     };
   }
 
   private getRequestHeader() {
     return {
       "content-type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${this.token}`
+      Authorization: `Bearer ${this.token}`,
     };
   }
 
@@ -406,7 +406,7 @@ class SlackApiClient {
       method: "post",
       headers: this.postRequestHeader(),
       muteHttpExceptions: true,
-      payload: payload instanceof String ? payload : JSON.stringify(payload)
+      payload: payload instanceof String ? payload : JSON.stringify(payload),
     };
 
     return options;
@@ -416,7 +416,7 @@ class SlackApiClient {
     const options: URLFetchRequestOptions = {
       method: "get",
       headers: this.getRequestHeader(),
-      muteHttpExceptions: true
+      muteHttpExceptions: true,
     };
 
     return options;

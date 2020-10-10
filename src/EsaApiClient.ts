@@ -121,14 +121,14 @@ class EsaApiClient {
   private postRequestHeader() {
     return {
       "content-type": "application/json; charset=UTF-8",
-      Authorization: `Bearer ${this.token}`
+      Authorization: `Bearer ${this.token}`,
     };
   }
 
   private getRequestHeader() {
     return {
       "content-type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${this.token}`
+      Authorization: `Bearer ${this.token}`,
     };
   }
 
@@ -137,7 +137,7 @@ class EsaApiClient {
       method: "post",
       headers: this.postRequestHeader(),
       muteHttpExceptions: true,
-      payload: payload instanceof String ? payload : JSON.stringify(payload)
+      payload: payload instanceof String ? payload : JSON.stringify(payload),
     };
 
     return options;
@@ -147,7 +147,7 @@ class EsaApiClient {
     const options: URLFetchRequestOptions = {
       method: "get",
       headers: this.getRequestHeader(),
-      muteHttpExceptions: true
+      muteHttpExceptions: true,
     };
 
     return options;

@@ -13,7 +13,7 @@ const responseMock = {
   }),
   getContentText: jest.fn(() => {
     return JSON.stringify(response);
-  })
+  }),
 };
 mockFetch.mockReturnValue(responseMock);
 

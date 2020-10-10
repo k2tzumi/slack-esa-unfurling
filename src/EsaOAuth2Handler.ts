@@ -33,7 +33,7 @@ class EsaOAuth2Handler {
 
   public get authorizationUrl(): string {
     return this.service.getAuthorizationUrl({
-      response_type: "code"
+      response_type: "code",
     });
   }
 
@@ -110,14 +110,14 @@ class EsaOAuth2Handler {
 
   private revoke(): void {
     const formData = {
-      access_token: this.access_token
+      access_token: this.access_token,
     };
 
     const options: URLFetchRequestOptions = {
       contentType: "application/x-www-form-urlencoded",
       method: "post",
       muteHttpExceptions: true,
-      payload: formData
+      payload: formData,
     };
 
     const response = JSON.parse(

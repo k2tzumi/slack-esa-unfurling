@@ -28,12 +28,12 @@ class DelayedJobBroker extends JobBroker {
       id: trigger.getUniqueId(),
       parameter: JSON.stringify(parameter),
       state: "waiting",
-      scheduled_at: this.scheduled_at.getTime()
+      scheduled_at: this.scheduled_at.getTime(),
     };
 
     return {
       trigger,
-      parameter: jobParameter
+      parameter: jobParameter,
     };
   }
 }

@@ -63,7 +63,7 @@ class JobBroker {
             ) {
               return {
                 parameter,
-                trigger
+                trigger,
               };
             } else {
               // Compare scheduled_at
@@ -73,7 +73,7 @@ class JobBroker {
               ) {
                 waitJob = {
                   parameter,
-                  trigger
+                  trigger,
                 };
               } else {
                 console.info(
@@ -182,12 +182,12 @@ class JobBroker {
       handler: callback.name,
       id: trigger.getUniqueId(),
       parameter: JSON.stringify(parameter),
-      state: "waiting"
+      state: "waiting",
     };
 
     return {
       trigger,
-      parameter: jobParameter
+      parameter: jobParameter,
     };
   }
 

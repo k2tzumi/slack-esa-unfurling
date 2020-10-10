@@ -11,7 +11,7 @@ const scriptCache = {
   getAll: jest.fn(),
   putAll: jest.fn(),
   remove: jest.fn(),
-  removeAll: jest.fn()
+  removeAll: jest.fn(),
 };
 
 CacheService.getScriptCache = jest.fn(() => scriptCache);
@@ -32,14 +32,14 @@ describe("SlackHandler", () => {
             block_id: "block_id",
             selected_users: ["UH5FQ4JMD"],
             initial_users: ["UH5FQ4JMD"],
-            action_ts: "1595050566.800301"
-          }
-        ]
+            action_ts: "1595050566.800301",
+          },
+        ],
       };
       const e = {
         parameter: {
-          payload: JSON.stringify(payload)
-        }
+          payload: JSON.stringify(payload),
+        },
       };
 
       const listner = jest.fn();

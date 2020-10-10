@@ -13,7 +13,7 @@ const okIncomingWebhookResponse = {
   }),
   getContentText: jest.fn(() => {
     return "ok";
-  })
+  }),
 };
 
 const okInteractionsResponseUrlResponse = {
@@ -22,7 +22,7 @@ const okInteractionsResponseUrlResponse = {
   }),
   getContentText: jest.fn(() => {
     return '{ "ok": true }';
-  })
+  }),
 };
 
 const ngResponse = {
@@ -31,7 +31,7 @@ const ngResponse = {
   }),
   getContentText: jest.fn(() => {
     return "ng";
-  })
+  }),
 };
 
 describe("SlackWebhooks", () => {

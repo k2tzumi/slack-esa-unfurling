@@ -10,7 +10,7 @@ const scriptCache = {
   getAll: jest.fn(),
   putAll: jest.fn(),
   remove: jest.fn(),
-  removeAll: jest.fn()
+  removeAll: jest.fn(),
 };
 
 const trigger = {
@@ -18,15 +18,15 @@ const trigger = {
   getHandlerFunction: jest.fn(),
   getTriggerSource: jest.fn(),
   getTriggerSourceId: jest.fn(),
-  getUniqueId: jest.fn()
+  getUniqueId: jest.fn(),
 };
 
 const triggerBuilder = {
   timeBased: jest.fn(() => clockTriggerBuilder),
-  create: jest.fn(() => trigger)
+  create: jest.fn(() => trigger),
 };
 const clockTriggerBuilder = {
-  after: jest.fn(() => triggerBuilder)
+  after: jest.fn(() => triggerBuilder),
 };
 
 CacheService.getScriptCache = jest.fn(() => scriptCache);
