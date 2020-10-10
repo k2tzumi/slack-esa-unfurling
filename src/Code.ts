@@ -409,8 +409,9 @@ function createCommentBlocks(comment: Comment, post: Post): {} {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `${comment.created_by.screen_name} commented on <${comment.url
-            }|${generatePostTitle(post)}>`,
+          text: `${comment.created_by.screen_name} commented on <${
+            comment.url
+          }|${generatePostTitle(post)}>`,
         },
         fields: [
           {
@@ -573,11 +574,16 @@ function extractImage(html: string): {} | null {
       ) {
         const alt = image.match(/alt=["|'](.*?)["|']/);
         const alt_text = alt ? alt[1] : null;
-        return {
+        const imageElement = {
           type: "image",
           image_url,
           alt_text,
         };
+        if (alt_text === null) {
+          delete imageElement.alt_text;
+        }
+
+        return imageElement;
       }
     }
   }
