@@ -147,7 +147,7 @@ function doPost(e): TextOutput {
     } else {
       new JobBroker().enqueue(asyncLogging, {
         message: exception.message,
-        stack: exception.stack
+        stack: exception.stack,
       });
       throw exception;
     }
@@ -181,7 +181,7 @@ const executeLinkSharedEvent = (event: LinkSharedEvent): void => {
         channel: event.channel,
         user: event.user,
         message_ts: event.message_ts,
-        url: link.url
+        url: link.url,
       });
     }
   }
@@ -215,7 +215,7 @@ function createAuthenticationBlocks(
 ): {}[] {
   const formValue = {
     message_ts,
-    url
+    url,
   };
 
   let message;
@@ -233,9 +233,9 @@ function createAuthenticationBlocks(
       elements: [
         {
           type: "mrkdwn",
-          text: message
-        }
-      ]
+          text: message,
+        },
+      ],
     },
     {
       type: "actions",
@@ -244,24 +244,24 @@ function createAuthenticationBlocks(
           type: "button",
           text: {
             type: "plain_text",
-            text: "Yes, please"
+            text: "Yes, please",
           },
           value: JSON.stringify(formValue),
           url: handler.authorizationUrl,
           style: "primary",
-          action_id: "auth"
+          action_id: "auth",
         },
         {
           type: "button",
           text: {
             type: "plain_text",
-            text: "No, thanks"
+            text: "No, thanks",
           },
           value: '{ "no": true }',
-          action_id: "no"
-        }
-      ]
-    }
+          action_id: "no",
+        },
+      ],
+    },
   ];
 }
 
@@ -384,7 +384,7 @@ function createUnfurls(esaApiClient: EsaApiClient, url: string): {} {
 }
 
 function createCommentBlocks(comment: Comment, post: Post): {} {
-  const image = extractImage(comment);
+  const image = extractImage(comment.body_html);
 
   const blocks = {
     blocks: [
@@ -394,16 +394,16 @@ function createCommentBlocks(comment: Comment, post: Post): {} {
           {
             type: "image",
             image_url: comment.created_by.icon,
-            alt_text: "commented on"
+            alt_text: "commented on",
           },
           {
             type: "mrkdwn",
             text: `*${generateMemberLink(
               comment.url,
               comment.created_by.screen_name
-            )}*`
-          }
-        ]
+            )}*`,
+          },
+        ],
       },
       {
         type: "section",
@@ -411,34 +411,34 @@ function createCommentBlocks(comment: Comment, post: Post): {} {
           type: "mrkdwn",
           text: `${comment.created_by.screen_name} commented on <${
             comment.url
-          }|${generatePostTitle(post)}>`
+          }|${generatePostTitle(post)}>`,
         },
         fields: [
           {
             type: "mrkdwn",
-            text: head(comment.body_md, 10)
-          }
-        ]
+            text: head(comment.body_md, 10),
+          },
+        ],
       },
       {
         type: "context",
         elements: [
           {
             type: "mrkdwn",
-            text: genarateFooter(comment)
+            text: genarateFooter(comment),
           },
           {
             type: "image",
             image_url: comment.created_by.icon,
-            alt_text: "created_by"
+            alt_text: "created_by",
           },
           {
             type: "mrkdwn",
-            text: comment.updated_at ? comment.updated_at : comment.created_at
-          }
-        ]
-      }
-    ]
+            text: comment.updated_at ? comment.updated_at : comment.created_at,
+          },
+        ],
+      },
+    ],
   };
 
   if (image) {
@@ -449,7 +449,7 @@ function createCommentBlocks(comment: Comment, post: Post): {} {
 }
 
 function createPostBlocks(post: Post): {} {
-  const image = extractImage(post);
+  const image = extractImage(post.body_html);
 
   const blocks = {
     blocks: [
@@ -459,55 +459,55 @@ function createPostBlocks(post: Post): {} {
           {
             type: "image",
             image_url: post.created_by.icon,
-            alt_text: "created_by"
+            alt_text: "created_by",
           },
           {
             type: "mrkdwn",
             text: `*${generateMemberLink(
               post.url,
               post.created_by.screen_name
-            )}*`
+            )}*`,
           },
           {
             type: "mrkdwn",
-            text: post.message
-          }
-        ]
+            text: post.message,
+          },
+        ],
       },
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `<${post.url}|${generatePostTitle(post)}>`
+          text: `<${post.url}|${generatePostTitle(post)}>`,
         },
         fields: [
           {
             type: "mrkdwn",
-            text: head(post.body_md, 10)
-          }
-        ]
+            text: head(post.body_md, 10),
+          },
+        ],
       },
       {
         type: "context",
         elements: [
           {
             type: "mrkdwn",
-            text: genarateFooter(post)
+            text: genarateFooter(post),
           },
           {
             type: "image",
             image_url: post.updated_by
               ? post.updated_by.icon
               : post.created_by.icon,
-            alt_text: "updated_by"
+            alt_text: "updated_by",
           },
           {
             type: "mrkdwn",
-            text: post.updated_at ? post.updated_at : post.created_at
-          }
-        ]
-      }
-    ]
+            text: post.updated_at ? post.updated_at : post.created_at,
+          },
+        ],
+      },
+    ],
   };
 
   if (image) {
@@ -560,18 +560,24 @@ function generatePostRevisionLink(post: Post): string {
   return `<${post.url}/revisions/${post.revision_number}|diff>`;
 }
 
-function extractImage(post: Post | Comment): {} | null {
-  const images = post.body_html.match(/<img(.|\s)*?>/gi);
+function extractImage(html: string): {} | null {
+  const images = html.match(/<img(.|\s)*?>/gi);
 
   if (images) {
     for (const image of images) {
-      const image_url = image.match(/src=["|'](.*?)["|']/)[1];
-      if (image_url.match(/^https?:\/\/.*/)) {
-        const alt_text = image.match(/alt=["|'](.*?)["|']/)[1];
+      const src = image.match(/src=["|'](.*?)["|']/);
+      const image_url = src ? src[1] : null;
+      if (
+        image_url !== null &&
+        image_url.match(/^https?:\/\/.*/) &&
+        image.match(/class=\"emoji\"/) === null
+      ) {
+        const alt = image.match(/alt=["|'](.*?)["|']/);
+        const alt_text = alt ? alt[1] + "hoge" : null;
         return {
           type: "image",
           image_url,
-          alt_text
+          alt_text,
         };
       }
     }
@@ -579,4 +585,4 @@ function extractImage(post: Post | Comment): {} | null {
   return null;
 }
 
-export { executeLinkSharedEvent, createUnfurls };
+export { executeLinkSharedEvent, createUnfurls, extractImage };

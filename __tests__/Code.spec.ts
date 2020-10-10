@@ -9,7 +9,7 @@ const properites = {
   getKeys: jest.fn(),
   getProperties: jest.fn(),
   setProperties: jest.fn(),
-  setProperty: jest.fn()
+  setProperty: jest.fn(),
 };
 
 PropertiesService.getScriptProperties = jest.fn(() => properites);
@@ -18,7 +18,7 @@ PropertiesService.getUserProperties = jest.fn(() => properites);
 const service = {
   setAuthorizationBaseUrl: jest.fn(() => {
     return this;
-  })
+  }),
 };
 
 OAuth2.createService = jest.fn(() => service);
@@ -32,18 +32,18 @@ const response = {
   }),
   getBlob: jest.fn(() => {
     return "";
-  })
+  }),
 };
 UrlFetchApp.fetch = jest.fn(() => response);
 
 const fileIteraater = {
   hasNext: jest.fn(() => {
     return false;
-  })
+  }),
 };
 Utilities.jsonStringify = jest.fn();
 
-import { createUnfurls } from "../src/Code";
+import { createUnfurls, extractImage } from "../src/Code";
 import { EsaApiClient } from "../src/EsaApiClient";
 describe("Code", () => {
   describe("createUnfurls", () => {
@@ -69,13 +69,13 @@ describe("Code", () => {
           name: "Atsuo Fukaya",
           screen_name: "fukayatsu",
           icon:
-            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png"
+            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
         },
         updated_by: {
           name: "Atsuo Fukaya",
           screen_name: "fukayatsu",
           icon:
-            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png"
+            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
         },
         kind: "flow",
         comments_count: 1,
@@ -84,7 +84,7 @@ describe("Code", () => {
         stargazers_count: 1,
         watchers_count: 1,
         star: true,
-        watch: true
+        watch: true,
       };
       const expected = [
         {
@@ -94,23 +94,23 @@ describe("Code", () => {
               type: "image",
               image_url:
                 "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
-              alt_text: "created_by"
+              alt_text: "created_by",
             },
             {
               type: "mrkdwn",
-              text: "*<https://team.esa.io/members/fukayatsu|fukayatsu>*"
+              text: "*<https://team.esa.io/members/fukayatsu|fukayatsu>*",
             },
-            { type: "mrkdwn", text: "Add Getting Started section" }
-          ]
+            { type: "mrkdwn", text: "Add Getting Started section" },
+          ],
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
             text:
-              "<https://team.esa.io/posts/4|[WIP] 日報/2015/05/09/hi! #api #dev>"
+              "<https://team.esa.io/posts/4|[WIP] 日報/2015/05/09/hi! #api #dev>",
           },
-          fields: [{ type: "mrkdwn", text: "# Getting Started" }]
+          fields: [{ type: "mrkdwn", text: "# Getting Started" }],
         },
         {
           type: "context",
@@ -118,17 +118,17 @@ describe("Code", () => {
             {
               type: "mrkdwn",
               text:
-                "Created by <https://team.esa.io/members/fukayatsu|fukayatsu>"
+                "Created by <https://team.esa.io/members/fukayatsu|fukayatsu>",
             },
             {
               type: "image",
               image_url:
                 "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
-              alt_text: "updated_by"
+              alt_text: "updated_by",
             },
-            { type: "mrkdwn", text: "2015-05-09T11:54:51+09:00" }
-          ]
-        }
+            { type: "mrkdwn", text: "2015-05-09T11:54:51+09:00" },
+          ],
+        },
       ];
       const actual = createUnfurls(client, url);
       console.log(JSON.stringify(actual[url].blocks));
@@ -149,10 +149,10 @@ describe("Code", () => {
           name: "TAEKO AKATSUKA",
           screen_name: "taea",
           icon:
-            "https://img.esa.io/uploads/production/users/2/icon/thumb_m_2690997f07b7de3014a36d90827603d6.jpg"
+            "https://img.esa.io/uploads/production/users/2/icon/thumb_m_2690997f07b7de3014a36d90827603d6.jpg",
         },
         stargazers_count: 0,
-        star: false
+        star: false,
       };
       const expected = [
         {
@@ -162,39 +162,39 @@ describe("Code", () => {
               type: "image",
               image_url:
                 "https://img.esa.io/uploads/production/users/2/icon/thumb_m_2690997f07b7de3014a36d90827603d6.jpg",
-              alt_text: "commented on"
+              alt_text: "commented on",
             },
             {
               type: "mrkdwn",
-              text: "*<https://team.esa.io/members/taea|taea>*"
-            }
-          ]
+              text: "*<https://team.esa.io/members/taea|taea>*",
+            },
+          ],
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
             text:
-              "taea commented on <https://team.esa.io/posts/2#comment-123|undefined>"
+              "taea commented on <https://team.esa.io/posts/2#comment-123|undefined>",
           },
-          fields: [{ type: "mrkdwn", text: "読みたい" }]
+          fields: [{ type: "mrkdwn", text: "読みたい" }],
         },
         {
           type: "context",
           elements: [
             {
               type: "mrkdwn",
-              text: "Created by <https://team.esa.io/members/taea|taea>"
+              text: "Created by <https://team.esa.io/members/taea|taea>",
             },
             {
               type: "image",
               image_url:
                 "https://img.esa.io/uploads/production/users/2/icon/thumb_m_2690997f07b7de3014a36d90827603d6.jpg",
-              alt_text: "created_by"
+              alt_text: "created_by",
             },
-            { type: "mrkdwn", text: "2014-05-18T23:02:29+09:00" }
-          ]
-        }
+            { type: "mrkdwn", text: "2014-05-18T23:02:29+09:00" },
+          ],
+        },
       ];
       const actual = createUnfurls(client, url);
       console.log(JSON.stringify(actual[url].blocks));
@@ -223,13 +223,13 @@ describe("Code", () => {
           name: "Atsuo Fukaya",
           screen_name: "fukayatsu",
           icon:
-            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png"
+            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
         },
         updated_by: {
           name: "Atsuo Fukaya",
           screen_name: "fukayatsu",
           icon:
-            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png"
+            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
         },
         kind: "flow",
         comments_count: 1,
@@ -238,7 +238,7 @@ describe("Code", () => {
         stargazers_count: 1,
         watchers_count: 1,
         star: true,
-        watch: true
+        watch: true,
       };
       const expected = [
         {
@@ -248,23 +248,23 @@ describe("Code", () => {
               type: "image",
               image_url:
                 "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
-              alt_text: "created_by"
+              alt_text: "created_by",
             },
             {
               type: "mrkdwn",
-              text: "*<https://team.esa.io/members/fukayatsu|fukayatsu>*"
+              text: "*<https://team.esa.io/members/fukayatsu|fukayatsu>*",
             },
-            { type: "mrkdwn", text: "Add Getting Started section" }
-          ]
+            { type: "mrkdwn", text: "Add Getting Started section" },
+          ],
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
             text:
-              "<https://team.esa.io/posts/4|[WIP] 日報/2015/05/09/hi! #api #dev>"
+              "<https://team.esa.io/posts/4|[WIP] 日報/2015/05/09/hi! #api #dev>",
           },
-          fields: [{ type: "mrkdwn", text: "# Getting Started" }]
+          fields: [{ type: "mrkdwn", text: "# Getting Started" }],
         },
         {
           type: "context",
@@ -272,23 +272,117 @@ describe("Code", () => {
             {
               type: "mrkdwn",
               text:
-                "Created by <https://team.esa.io/members/fukayatsu|fukayatsu>"
+                "Created by <https://team.esa.io/members/fukayatsu|fukayatsu>",
             },
             {
               type: "image",
               image_url:
                 "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
-              alt_text: "updated_by"
+              alt_text: "updated_by",
             },
-            { type: "mrkdwn", text: "2015-05-09T11:54:51+09:00" }
-          ]
+            { type: "mrkdwn", text: "2015-05-09T11:54:51+09:00" },
+          ],
         },
         {
           type: "image",
           image_url:
             "https://img.esa.io/uploads/production/pictures/105/3203/image/378bedb1186931ecfa019e92dafc1692.gif",
-          alt_text: "patapata (( ⁰⊖⁰)/)"
-        }
+          alt_text: "patapata (( ⁰⊖⁰)/)",
+        },
+      ];
+      const actual = createUnfurls(client, url);
+      console.log(JSON.stringify(actual[url].blocks));
+
+      expect(actual[url]).toHaveProperty("blocks", expected);
+    });
+    it("long post success", () => {
+      const url = "https://team.esa.io/posts/4";
+      const client = new EsaApiClient("token", "team");
+      apiResponse = {
+        number: 1,
+        name: "hi!",
+        full_name: "日報/2015/05/09/hi! #api #dev",
+        wip: true,
+        body_md:
+          "* 1\n* 2\n* 3\n* 4\n* 5\n* 6\n* 7\n* 8\n* 9\n* 10\n* 11\n* 12",
+        body_html:
+          '<h1 id="1-0-0" name="1-0-0">\n<a class="anchor" href="#1-0-0"><i class="fa fa-link"></i><span class="hidden" data-text="Getting Started"> &gt; Getting Started</span></a>Getting Started</h1>\n',
+        created_at: "2015-05-09T11:54:50+09:00",
+        message: "Add Getting Started section",
+        url,
+        updated_at: "2015-05-09T11:54:51+09:00",
+        tags: ["api", "dev"],
+        category: "日報/2015/05/09",
+        revision_number: 1,
+        created_by: {
+          name: "Atsuo Fukaya",
+          screen_name: "fukayatsu",
+          icon:
+            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
+        },
+        updated_by: {
+          name: "Atsuo Fukaya",
+          screen_name: "fukayatsu",
+          icon:
+            "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
+        },
+        kind: "flow",
+        comments_count: 1,
+        tasks_count: 1,
+        done_tasks_count: 1,
+        stargazers_count: 1,
+        watchers_count: 1,
+        star: true,
+        watch: true,
+      };
+      const expected = [
+        {
+          type: "context",
+          elements: [
+            {
+              type: "image",
+              image_url:
+                "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
+              alt_text: "created_by",
+            },
+            {
+              type: "mrkdwn",
+              text: "*<https://team.esa.io/members/fukayatsu|fukayatsu>*",
+            },
+            { type: "mrkdwn", text: "Add Getting Started section" },
+          ],
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text:
+              "<https://team.esa.io/posts/4|[WIP] 日報/2015/05/09/hi! #api #dev>",
+          },
+          fields: [
+            {
+              type: "mrkdwn",
+              text: "* 1\n* 2\n* 3\n* 4\n* 5\n* 6\n* 7\n* 8\n* 9\n* 10",
+            },
+          ],
+        },
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text:
+                "Created by <https://team.esa.io/members/fukayatsu|fukayatsu>",
+            },
+            {
+              type: "image",
+              image_url:
+                "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
+              alt_text: "updated_by",
+            },
+            { type: "mrkdwn", text: "2015-05-09T11:54:51+09:00" },
+          ],
+        },
       ];
       const actual = createUnfurls(client, url);
       console.log(JSON.stringify(actual[url].blocks));
@@ -296,96 +390,26 @@ describe("Code", () => {
       expect(actual[url]).toHaveProperty("blocks", expected);
     });
   });
-  it("long post success", () => {
-    const url = "https://team.esa.io/posts/4";
-    const client = new EsaApiClient("token", "team");
-    apiResponse = {
-      number: 1,
-      name: "hi!",
-      full_name: "日報/2015/05/09/hi! #api #dev",
-      wip: true,
-      body_md: "* 1\n* 2\n* 3\n* 4\n* 5\n* 6\n* 7\n* 8\n* 9\n* 10\n* 11\n* 12",
-      body_html:
-        '<h1 id="1-0-0" name="1-0-0">\n<a class="anchor" href="#1-0-0"><i class="fa fa-link"></i><span class="hidden" data-text="Getting Started"> &gt; Getting Started</span></a>Getting Started</h1>\n',
-      created_at: "2015-05-09T11:54:50+09:00",
-      message: "Add Getting Started section",
-      url,
-      updated_at: "2015-05-09T11:54:51+09:00",
-      tags: ["api", "dev"],
-      category: "日報/2015/05/09",
-      revision_number: 1,
-      created_by: {
-        name: "Atsuo Fukaya",
-        screen_name: "fukayatsu",
-        icon:
-          "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png"
-      },
-      updated_by: {
-        name: "Atsuo Fukaya",
-        screen_name: "fukayatsu",
-        icon:
-          "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png"
-      },
-      kind: "flow",
-      comments_count: 1,
-      tasks_count: 1,
-      done_tasks_count: 1,
-      stargazers_count: 1,
-      watchers_count: 1,
-      star: true,
-      watch: true
-    };
-    const expected = [
-      {
-        type: "context",
-        elements: [
-          {
-            type: "image",
-            image_url:
-              "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
-            alt_text: "created_by"
-          },
-          {
-            type: "mrkdwn",
-            text: "*<https://team.esa.io/members/fukayatsu|fukayatsu>*"
-          },
-          { type: "mrkdwn", text: "Add Getting Started section" }
-        ]
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text:
-            "<https://team.esa.io/posts/4|[WIP] 日報/2015/05/09/hi! #api #dev>"
-        },
-        fields: [
-          {
-            type: "mrkdwn",
-            text: "* 1\n* 2\n* 3\n* 4\n* 5\n* 6\n* 7\n* 8\n* 9\n* 10"
-          }
-        ]
-      },
-      {
-        type: "context",
-        elements: [
-          {
-            type: "mrkdwn",
-            text: "Created by <https://team.esa.io/members/fukayatsu|fukayatsu>"
-          },
-          {
-            type: "image",
-            image_url:
-              "http://img.esa.io/uploads/production/users/1/icon/thumb_m_402685a258cf2a33c1d6c13a89adec92.png",
-            alt_text: "updated_by"
-          },
-          { type: "mrkdwn", text: "2015-05-09T11:54:51+09:00" }
-        ]
-      }
-    ];
-    const actual = createUnfurls(client, url);
-    console.log(JSON.stringify(actual[url].blocks));
+  describe("extractImage", () => {
+    it("parse emoji", () => {
+      const actual = extractImage(
+        '<img class="emoji" title=":grinning:" alt=":grinning:" src="https://assets.esa.io/images/emoji/unicode/1f600.png">'
+      );
 
-    expect(actual[url]).toHaveProperty("blocks", expected);
+      expect(actual).toBeNull();
+    });
+    it("parse non emoji", () => {
+      const actual = extractImage(
+        '<img src="https://img.esa.io/uploads/production/pictures/1/910/image/dffd841aac82710597076cb37a56627e.png" alt="スクリーンショット 2014-11-14 20.15.43.png">'
+      );
+      const expected = {
+        alt_text: "スクリーンショット 2014-11-14 20.15.43.png",
+        image_url:
+          "https://img.esa.io/uploads/production/pictures/1/910/image/dffd841aac82710597076cb37a56627e.png",
+        type: "image",
+      };
+
+      expect(actual).toEqual(expected);
+    });
   });
 });
