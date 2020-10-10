@@ -411,5 +411,17 @@ describe("Code", () => {
 
       expect(actual).toEqual(expected);
     });
+    it("no alt", () => {
+      const actual = extractImage(
+        '<img src="https://img.esa.io/uploads/production/pictures/1/910/image/dffd841aac82710597076cb37a56627e.png">'
+      );
+      const expected = {
+        image_url:
+          "https://img.esa.io/uploads/production/pictures/1/910/image/dffd841aac82710597076cb37a56627e.png",
+        type: "image",
+      };
+
+      expect(actual).toEqual(expected);
+    });
   });
 });
